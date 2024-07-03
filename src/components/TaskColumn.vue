@@ -1,7 +1,9 @@
 <template>
-    <div class="task-column">
-        <h2>{{ title }}</h2>
-        <TaskCard v-for="task in tasks" :key="task.id" :task="task" />
+    <div class="container">
+        <div class="task-column">
+            <h2>{{ title }}</h2>
+            <TaskCard v-for="task in tasks" :key="task.id" :task="task" />
+        </div>
     </div>
 </template>
 
@@ -17,6 +19,12 @@ defineProps<{
 </script>
 
 <style scoped>
+.container {
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+}
+
 .task-column {
     display: flex;
     flex-direction: column;
@@ -24,5 +32,6 @@ defineProps<{
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
+    padding: 1rem;
 }
 </style>

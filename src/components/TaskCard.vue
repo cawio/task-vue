@@ -1,13 +1,15 @@
 <template>
-    <div class="task-card">
-        <h3>{{ task.title }}</h3>
-        <p>{{ task.subtitle }}</p>
-    </div>
+<Card>
+    <template #title>{{ task.title }}</template>
+    <template #subtitle>{{ task.subtitle }}</template>
+    <template #footer>{{ task.status }}</template>
+</Card>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import type { Task } from '@/types/Task'
+import Card from 'primevue/card'
 
 defineProps<{
     task: Task
@@ -15,10 +17,4 @@ defineProps<{
 </script>
 
 <style scoped>
-.task-card {
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-}
 </style>
