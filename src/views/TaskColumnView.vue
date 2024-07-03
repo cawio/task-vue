@@ -1,9 +1,11 @@
 <template>
-    <h1>Task Vue</h1>
     <div class="task-columns">
-        <TaskColumn title="New" :tasks="newTasks" />
-        <TaskColumn title="In Progress" :tasks="inProgressTasks" />
-        <TaskColumn title="Completed" :tasks="completedTasks" />
+        <TaskColumn
+            v-for="columnConfig in columnConfigs"
+            :key="columnConfig[0]"
+            :title="columnConfig[1].title"
+            :tasks="columnConfig[1].tasks"
+        />
     </div>
 </template>
 
@@ -11,6 +13,7 @@
 import type { Task } from '@/types/Task'
 import { ref } from 'vue'
 import TaskColumn from '@/components/TaskColumn.vue'
+import type { TaskStatus } from '@/types/TaskStatus'
 
 const tasks = ref<Task[]>([
     { id: 1, title: 'Task 1', subtitle: 'Subtitle 1', status: 'new' },
@@ -27,11 +30,23 @@ const tasks = ref<Task[]>([
     { id: 12, title: 'Task 12', subtitle: 'Subtitle 12', status: 'completed' }
 ])
 
-const newTasks = tasks.value.filter((task) => task.status === 'new')
+type ColumnConfig = {
+    title: string
+    tasks: Task[]
+}
 
-const inProgressTasks = tasks.value.filter((task) => task.status === 'in-progress')
+const columnConfigs = new Map<TaskStatus, ColumnConfig>()
 
-const completedTasks = tasks.value.filter((task) => task.status === 'completed')
+for (const task of tasks.value) {
+    if (!columnConfigs.has(task.status)) {
+        columnConfigs.set(task.status, {
+            title: task.status[0].toUpperCase() + task.status.slice(1).replace('-', ' '),
+            tasks: []
+        })
+    }
+
+    columnConfigs.get(task.status)!.tasks.push(task)
+}
 </script>
 
 <style scoped>
@@ -39,6 +54,6 @@ const completedTasks = tasks.value.filter((task) => task.status === 'completed')
     display: flex;
     gap: 1rem;
     width: 100%;
-    height: 100%;
+    height: 50%;
 }
 </style>
